@@ -1,3 +1,9 @@
 
 {% extends "bootstrap/base.html" %}
 {% include "nav.html" %}
+{% block body %}
+<div class="container">
+    {% include "flash_messages.html" %}
+    {{ super() }}
+</div>
+{% endblock %}

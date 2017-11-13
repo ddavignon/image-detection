@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}Upload File{% endblock %}
+{% block content %}
+<h1>Photo Upload</h1>
+<form method="POST" enctype="multipart/form-data">
+     {{ form.csrf_token }}
+     {{ form.hidden_tag() }}
+     {{ form.photo }}
+     {% for error in form.photo.errors %}
+         <span style="color: red;">{{ error }}</span>
+     {% endfor %}
+     {{ form.submit }}
+</form>
+
+{% if file_url %}
+<br>
+<img src="{{ file_url }}">
+{% endif %}
+{% endblock %}
