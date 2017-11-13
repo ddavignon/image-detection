@@ -8,6 +8,7 @@ Flask-Bootstrap==3.3.7.1
 Flask-Login==0.4.0
 Flask-Mail==0.9.1
 Flask-SQLAlchemy==2.3.2
+Flask-Uploads==0.2.1
 Flask-User==0.6.19
 Flask-WTF==0.14.2
 itsdangerous==0.24
