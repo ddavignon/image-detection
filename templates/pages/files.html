@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}Upload Success{% endblock %}
+{% block content %}
+<h1>Upload Successful!</h1>
+
+Here are the files you just uploaded. Your form data was discarded in this demo
+app, but if you check your terminal window you can see that all their names and
+values were submitted to the server.<p>
+
+<a href="{{ url_for('home') }}">Back to front page</a><p>
+
+{% for file_url in file_urls %}
+    <img src="{{ file_url }}">
+{% endfor %}
+
+{% endblock %}

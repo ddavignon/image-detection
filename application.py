@@ -53,13 +53,10 @@ def profile():
 def home():
     return render_template('pages/home.html', active='home')
 
+
 @app.route('/about')
 def about():
     return render_template('pages/about.html', active='about')
-
-@app.route('/contact')
-def contact():
-    return render_template('pages/contact.html', active='contact')
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -67,12 +64,21 @@ def contact():
 def upload():
     form = UploadForm()
     if form.validate_on_submit():
-        filename = photos.save(form.photo.data, folder=current_user.username, name="tmp.")
-        file_url = photos.url(filename)
+        file_urls = []
+        files = request.files.getlist('photo')
+        for photo in files:
+
+            filename = photos.save(
+                photo,
+                folder=current_user.username)
+
+            file_urls.append(photos.url(filename))
+
+        return render_template("pages/files.html", file_urls=file_urls)
     else:
-        file_url = None
-    return render_template('pages/upload.html', active='upload', form=form, file_url=file_url)
+        file_urls = []
+    return render_template('pages/upload.html', active='upload', form=form, file_urls=file_urls)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
