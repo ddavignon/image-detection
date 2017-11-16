@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, flash
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import login_required, UserManager, UserMixin, SQLAlchemyAdapter, current_user
@@ -74,6 +74,7 @@ def upload():
 
             file_urls.append(photos.url(filename))
 
+        flash(u'Photos saved successfully!', 'success')
         return render_template("pages/files.html", file_urls=file_urls)
     else:
         file_urls = []
