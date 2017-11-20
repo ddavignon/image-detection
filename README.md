@@ -13,6 +13,3 @@ To run app
 currently using https://sightengine.com/ api for image detection
 
 dependencies
-
-`Pillow`
-`sightengine`

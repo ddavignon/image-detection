@@ -7,11 +7,18 @@ Here are the files you just uploaded. Your form data was discarded in this demo
 app, but if you check your terminal window you can see that all their names and
 values were submitted to the server.<p>
 
-<a href="{{ url_for('home') }}">Back to front page</a><p>
+<a href="{{ url_for('upload') }}">Back</a><p>
 
 {% for file_url in file_urls %}
-<div class="col-md-4">
-    <img style="width: 100%" class="img img-responsive" src="{{ file_url }}">
+<div class="col-md-4" style="height: 250px">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <img style="height: 150px" class="img img-responsive center-block" src="{{ file_url }}">
+        </div>
+        <div class="panel-footer">
+            <a href="{{ file_url }}">View Image</a>
+        </div>
+    </div>
 </div>
 {% endfor %}
 

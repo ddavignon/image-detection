@@ -1,11 +1,12 @@
-from flask import Flask, render_template, redirect, request, url_for, flash
+from flask import Flask, render_template, redirect, request, url_for, flash, jsonify, session
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import login_required, UserManager, UserMixin, SQLAlchemyAdapter, current_user
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import SubmitField
+# from flask_wtf import FlaskForm
+from flask_dropzone import Dropzone
+# from flask_wtf.file import FileField, FileRequired, FileAllowed
+# from wtforms import SubmitField
 from PIL import Image, ImageFilter
 import uuid
 
@@ -15,15 +16,23 @@ import os
 
 app = Flask(__name__)
 Bootstrap(app)
+dropzone = Dropzone(app)
 
 
 app.config['SECRET_KEY'] = 'supersecretkeygoeshere'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['CSRF_ENABLED'] = True
 app.config['USER_ENABLE_EMAIL'] = False
 app.config['USER_APP_NAME'] = "Flask App"
 
+# Dropzone setting
+app.config['DROPZONE_UPLOAD_MULTIPLE'] = True
+app.config['DROPZONE_ALLOWED_FILE_CUSTOM'] = True
+app.config['DROPZONE_ALLOWED_FILE_TYPE'] = 'image/*'
+app.config['DROPZONE_REDIRECT_VIEW'] = 'results'
 
+# Uploads settings
 app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd() + '/static/tmp/uploads'
 
 photos = UploadSet('photos', IMAGES)
@@ -31,11 +40,6 @@ configure_uploads(app, photos)
 patch_request_class(app)  # set maximum file size, default is 16MB
 
 db = SQLAlchemy(app)
-
-
-class UploadForm(FlaskForm):
-    photo = FileField(validators=[FileAllowed(['jpeg','jpg', 'png'], u'Image only!'), FileRequired(u'File was empty!')])
-    submit = SubmitField(u'Upload')
 
 
 class User(db.Model, UserMixin):
@@ -65,19 +69,22 @@ def home():
 def about():
     return render_template('pages/about.html', active='about')
 
-
+    
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload():
-    form = UploadForm()
-    if form.validate_on_submit():
-        file_urls = []
-        files = request.files.getlist('photo')
-        # file_names = []
+    # set session for image results
+    if "file_urls" not in session:
+        session['file_urls'] = []
+    file_urls = session['file_urls']
+    
+    # handle image upload from Dropszone
+    if request.method == 'POST':
         directory_name=os.getcwd()+"/static/tmp/uploads"
-        
-        for file in files:
-            # create unique identifier for image
+        raw_files = request.files
+        for raw_file in raw_files:
+            file = request.files.get(raw_file) 
+            
             ext = os.path.splitext(file.filename)[1]
             unique_name = uuid.uuid4().hex + ext
             # initial save of photo to test    
@@ -90,12 +97,21 @@ def upload():
             
             # append image urls
             file_urls.append(photos.url(filename))
-        
-        flash(u'Photos saved successfully!', 'success')
-        return render_template("pages/files.html", file_urls=file_urls)
-    else:
-        file_urls = []
-    return render_template('pages/upload.html', active='upload', form=form, file_urls=file_urls)
+            
+        session['file_urls'] = file_urls
+    
+    # return dropzone template on GET request    
+    return render_template('pages/upload.html', active='upload', file_urls=file_urls)
+
+
+@app.route('/results')
+@login_required
+def results():
+    if "file_urls" not in session or session['file_urls'] == []:
+        return redirect(url_for('upload'))
+    file_urls = session['file_urls']
+    session.pop('file_urls', None)
+    return render_template("pages/files.html", file_urls=file_urls)
 
 
 client = SightengineClient('1815250773', 'oGKFfnDkDkcoKcH3x2hw')

@@ -1,26 +1,17 @@
 {% extends "layout.html" %}
 {% block title %}Upload File{% endblock %}
+{% block head %}
+{{ super() }}
+{{ dropzone.load() }}
+{{ dropzone.style('border: 2px dashed #0087F7; margin: 10%; min-height: 400px;') }}
+{% endblock %}
 {% block content %}
 <div class="container">
   <div class="row">
     <div class="col-lg-12 text-center">
         <h1>Photo Upload</h1>
-        <form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
-            {{ form.csrf_token }}
-            {{ form.hidden_tag() }}
-            <strong>Files:</strong><br>
-            <div class="col-md-offset-5">{{ form.photo(multiple="") }}</div>
-            {% for error in form.photo.errors %}
-                <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-            <br>
-            {{ form.submit }}
-        </form>
+        {{ dropzone.create(action_view='upload')  }}
     </div>
   </div>
 </div>
-    {% for file_url in file_urls %}
-        <img src="{{ file_url }}">
-    {% endfor %}
-
 {% endblock %}
