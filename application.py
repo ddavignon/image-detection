@@ -124,7 +124,7 @@ def check_image_for_minors(image):
                 baby = imgpil.copy()
                 blurredbaby = baby.crop((xx1, yy1, xx2, yy2))
     
-                blurredbaby = blurredbaby.filter(ImageFilter.GaussianBlur(3))
+                blurredbaby = blurredbaby.filter(ImageFilter.GaussianBlur(10))
                 baby.paste(blurredbaby, (xx1, yy1))
                 baby.save(image)
                 
