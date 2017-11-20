@@ -10,7 +10,9 @@ values were submitted to the server.<p>
 <a href="{{ url_for('home') }}">Back to front page</a><p>
 
 {% for file_url in file_urls %}
-    <img src="{{ file_url }}">
+<div class="col-md-4">
+    <img style="width: 100%" class="img img-responsive" src="{{ file_url }}">
+</div>
 {% endfor %}
 
 {% endblock %}

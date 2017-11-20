@@ -6,6 +6,13 @@ Basic Flask starter with Flask Bootstrap
 
 To run app
 
-`pip install -r requirements.txt`
+`pip3 install -r requirements.txt`
 
 `python3 application.py`
+
+currently using https://sightengine.com/ api for image detection
+
+dependencies
+
+`Pillow`
+`sightengine`
