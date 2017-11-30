@@ -118,34 +118,35 @@ client = SightengineClient('1815250773', 'oGKFfnDkDkcoKcH3x2hw')
 def check_image_for_minors(image):
     # output = client.check('face-attributes').set_url(image_url)
     output = client.check('face-attributes').set_file(image)
-    
-    for face in output['faces']:
-        if 'attributes' in face:
-            if face['attributes']['minor'] > 0.85:
-                print("child image found")
-                imgpil = Image.open(image)
-                imgwidth = imgpil.size[0]
-                imgheight = imgpil.size[1]
-    
-                x1 = face['x1']
-                y1 = face['y1']
-                x2 = face['x2']
-                y2 = face['y2']
-    
-                xx1 = int(round(float(x1 * imgwidth)))
-                yy1 = int(round(float(y1 * imgheight)))
-                xx2 = int(round(float(x2 * imgwidth)))
-                yy2 = int(round(float(y2 * imgheight)))
-    
-                baby = imgpil.copy()
-                blurredbaby = baby.crop((xx1, yy1, xx2, yy2))
-    
-                blurredbaby = blurredbaby.filter(ImageFilter.GaussianBlur(10))
-                baby.paste(blurredbaby, (xx1, yy1))
-                baby.save(image)
-                
+    # print('The output from checking the image', output)
+    try:
+        for face in output['faces']:
+            if 'attributes' in face:
+                if face['attributes']['minor'] > 0.80:
+                    print("child image found")
+                    imgpil = Image.open(image)
+                    imgwidth = imgpil.size[0]
+                    imgheight = imgpil.size[1]
+
+                    x1 = face['x1']
+                    y1 = face['y1']
+                    x2 = face['x2']
+                    y2 = face['y2']
+
+                    xx1 = int(round(float(x1 * imgwidth)))
+                    yy1 = int(round(float(y1 * imgheight)))
+                    xx2 = int(round(float(x2 * imgwidth)))
+                    yy2 = int(round(float(y2 * imgheight)))
+
+                    baby = imgpil.copy()
+                    blurredbaby = baby.crop((xx1, yy1, xx2, yy2))
+
+                    blurredbaby = blurredbaby.filter(ImageFilter.GaussianBlur(10))
+                    baby.paste(blurredbaby, (xx1, yy1))
+                    baby.save(image)
+    except:
+        print('no face found yo')
     print("done!")
-    
 
 if __name__ == '__main__':
     db.create_all()

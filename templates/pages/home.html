@@ -3,10 +3,14 @@
 <!-- Page Content -->
 <div class="container">
   <div class="row">
-    <div class="col-lg-12 text-center">
-      <h1 class="mt-5">Home Page</h1>
-        <a href="{{ url_for('upload') }}" class="btn btn-success">Upload Images</a>
+    <div class="col-md-10 col-md-offset-1 text-center">
+        <div class="jumbotron">
+            <h1 class="mt-5">Home Page</h1>
+            <hr/>
+            <a href="{{ url_for('upload') }}" class="btn btn-success">Upload Images</a>
+        </div>
     </div>
   </div>
 </div>
 {% endblock %}
+
