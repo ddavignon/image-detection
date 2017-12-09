@@ -11,6 +11,49 @@
         </div>
     </div>
   </div>
+  
+  <header>
+    <hr/>
+    <h3>Results</h3>
+    <hr/>
+  </header>
+  
+  <section class="row">
+    {% for image in face_images %}
+    <div class="col-md-2" style="height: 150px">
+      <div class="panel panel-default">
+          <div class="panel-body">
+              <img style="height: 50px" class="img img-responsive center-block" src="{{ url_for('static', filename='tmp/faces/' + image) }}">
+          </div>
+          <div class="panel-footer">
+              <a href="{{ url_for('static', filename='tmp/faces/' + image) }}">View Image</a>
+          </div>
+      </div>
+    </div>
+    {% endfor %}
+    </section>
+  
+    
+    <header>
+      <hr/>
+      <h3>Original Images</h3>
+      <hr/>
+    </header>
+  
+    <section class="row">
+    {% for image in uploaded_images %}
+    <div class="col-md-4" style="height: 250px">
+      <div class="panel panel-default">
+          <div class="panel-body">
+              <img style="height: 150px" class="img img-responsive center-block" src="{{ url_for('static', filename='tmp/uploads/' + image) }}">
+          </div>
+          <div class="panel-footer">
+              <a href="{{ url_for('static', filename='tmp/uploads/' + image) }}">View Image</a>
+          </div>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
 </div>
 {% endblock %}
 
