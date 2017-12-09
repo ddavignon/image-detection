@@ -61,7 +61,15 @@ def profile():
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('pages/home.html', active='home')
+    face_images = os.listdir(os.path.join(app.static_folder, "tmp/faces"))
+    face_images = filter(lambda x: x != '.keep', face_images)
+    uploaded_images = os.listdir(os.path.join(app.static_folder, "tmp/uploads"))
+    return render_template(
+        'pages/home.html',
+        active='home',
+        face_images=face_images,
+        uploaded_images=uploaded_images
+    )
 
 
 @app.route('/about')
