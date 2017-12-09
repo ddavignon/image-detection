@@ -1,15 +1,28 @@
-# Child Image Detection
+# Hide yo kids...
 > CST 205 Final Project
+> Michael Cwener, Dustin D'Avignon, Spencer Ortega
+> December 11th 2017
 
-Basic Flask starter with Flask Bootstrap
+
+Install 
+
+`pip3 install -r requirements.txt`
+
+`pip3 install opencv-python`
 
 
 To run app
 
-`pip3 install -r requirements.txt`
-
 `python3 application.py`
 
-currently using https://sightengine.com/ api for image detection
 
-dependencies
+Github Repo: https://github.com/ddavignon/image-detection
+
+
+
+Future work:
+	Train image detection with larger data set.
+	API endpoint to integrate with moble devices.
+
+
+

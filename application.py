@@ -1,3 +1,18 @@
+# Course: CST 205
+# Title: Hide yo kids... 
+# Description:
+#   Input - Users upload images
+#   Process - Detect children in user's upload using an image classifier 
+#   Output - Blurs the region of interest if child is detected 
+# Authors: Michael Cwener, Dustin D'Avignon, Spencer Ortega
+# Date: December 11th 2017
+
+# Michael: Image classification
+# Dustin: Flask
+# Spencer: Image classification
+
+# Github link: https://github.com/ddavignon/image-detection
+
 from flask import Flask, render_template, redirect, request, url_for, flash, jsonify, session
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
