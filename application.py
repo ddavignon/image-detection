@@ -1,15 +1,15 @@
-# Course: CST 205
+# Course: CST 205 Multimedia Design and Programming 
 # Title: Hide yo kids... 
 # Description:
 #   Input - Users upload images
 #   Process - Detect children in user's upload using an image classifier 
-#   Output - Blurs the region of interest if child is detected 
+#   Output - Blurs and saves the region of interest if child is detected 
 # Authors: Michael Cwener, Dustin D'Avignon, Spencer Ortega
 # Date: December 11th 2017
 
-# Michael: Image classification
+# Michael: OpenCV
 # Dustin: Flask
-# Spencer: Image classification
+# Spencer: OpenCV/Flask
 
 # Github link: https://github.com/ddavignon/image-detection
 
@@ -24,14 +24,11 @@ from flask_dropzone import Dropzone
 # from wtforms import SubmitField
 from face_detection import check_image_for_minors
 import uuid
-
-
 import os
 
 app = Flask(__name__)
 Bootstrap(app)
 dropzone = Dropzone(app)
-
 
 app.config['SECRET_KEY'] = 'supersecretkeygoeshere'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -55,27 +52,24 @@ patch_request_class(app)  # set maximum file size, default is 16MB
 
 db = SQLAlchemy(app)
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, server_default='')
     active = db.Column(db.Boolean(), nullable=False, server_default='0')
 
-
 db_adapter = SQLAlchemyAdapter(db, User)
 user_manager = UserManager(db_adapter, app)
-
 
 @app.route('/profile')
 @login_required
 def profile():
     return render_template('pages/user_profile.html')
 
-
 @app.route('/')
 @app.route('/home')
 def home():
+    # grab users saved uploads and children detections
     face_images = os.listdir(os.path.join(app.static_folder, "tmp/faces"))
     face_images = filter(lambda x: x != '.keep', face_images)
     uploaded_images = os.listdir(os.path.join(app.static_folder, "tmp/uploads"))
@@ -86,12 +80,11 @@ def home():
         uploaded_images=uploaded_images
     )
 
-
 @app.route('/about')
 def about():
     return render_template('pages/about.html', active='about')
 
-    
+  
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload():
@@ -124,7 +117,6 @@ def upload():
     
     # return dropzone template on GET request    
     return render_template('pages/upload.html', active='upload', file_urls=file_urls)
-
 
 @app.route('/results')
 @login_required
