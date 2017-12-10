@@ -1,5 +1,5 @@
 # Course: CST 205 Multimedia Design and Programming 
-# Title: Hide yo kids... 
+# Title: Hide Yo Kids... 
 # Description:
 #   Input - Users upload images
 #   Process - Detect children in user's upload using an image classifier 
@@ -9,7 +9,7 @@
 
 # Michael: OpenCV
 # Dustin: Flask
-# Spencer: OpenCV/Flask
+# Spencer: OpenCV/Flask, marketing, and vision of "Hide Yo Kids..."
 
 # Github link: https://github.com/ddavignon/image-detection
 
