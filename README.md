@@ -3,11 +3,11 @@
 
 > CST 205 Final Project
 
-> December 11th 2017
+> December 11th, 2017
 
 ## Abstract
 
-Hide Yo Kids... is a flask web app with python that allows users to upload images and detect if any children are present in them. If a child is detected in a user's upload we blur and save the region of interest to user's account.
+Hide Yo Kids... is a flask based python web applications that allows users to upload images and detect if any children are present in them. If a child is detected in a user's upload we blur and save the region of interest to user's account.
 
 
 ## Installation 
